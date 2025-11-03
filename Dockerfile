@@ -1,23 +1,14 @@
-# Usa a imagem oficial do Odoo 17 (pode ajustar para sua versão)
+# Usa a imagem oficial do Odoo (já vem pronta com tudo)
 FROM odoo:17
 
-# Instala as dependências do sistema necessárias para python-ldap e outras libs
-USER root
-RUN apt-get update && apt-get install -y \
-    libldap2-dev \
-    libsasl2-dev \
-    libssl-dev \
-    gcc \
-    python3-dev \
-    build-essential \
- && rm -rf /var/lib/apt/lists/*
+# Define o diretório de trabalho
+WORKDIR /usr/src/odoo
 
-# Retorna ao usuário padrão do Odoo
-USER odoo
+# Copia arquivos adicionais do seu projeto (se houver)
+# COPY ./addons /mnt/extra-addons
 
-# Copia o código-fonte do seu repositório para dentro do container
-COPY . /mnt/extra-addons
+# Exposição da porta padrão
+EXPOSE 8069
 
-# Define o comando padrão do container
-CMD ["odoo", "-c", "/etc/odoo/odoo.conf"]
-
+# Comando padrão de execução
+CMD ["odoo"]
